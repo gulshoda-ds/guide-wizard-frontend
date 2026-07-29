@@ -15,11 +15,18 @@ Store answers under `profile.viewer_attributes` with these exact snake_case
 keys and internal option values (labels are what the participant sees):
 
 1. **age** — "How old are you?" → `under_40 / 40_49 / 50_64 / 65_74 / 75_plus`
-2. **population_group** — "Which community do you most identify with?" →
+2. **population_group** — "Which community do you most identify with?" —
+   scoped to the African American / Black diaspora this app serves →
    `african_american` ("African American") /
    `black_african_immigrant` ("African immigrant (Nigerian, Ghanaian, Ethiopian, Somali…)") /
    `afro_caribbean` ("Afro-Caribbean (Jamaican, Haitian, Trinidadian…)") /
-   `hispanic_latina / vietnamese / korean / white / multiracial_other / prefer_not_to_say`
+   `afro_latina` ("Afro-Latina") /
+   `black_multiracial_other` ("Multiracial / another Black background") /
+   `prefer_not_to_say`
+
+   Relatedly, the existing Concern-step "Which language feels most like home?"
+   chips are diaspora languages: English, Haitian Creole, French, Spanish,
+   Amharic, Somali, Swahili, Yoruba, Arabic.
 3. **migration_status** — "Were you born in the US, or did you move here?" →
    `us_born / immigrant_10plus_years / immigrant_recent`
 4. **acculturation_level** — "Day to day, which feels most like you?" →

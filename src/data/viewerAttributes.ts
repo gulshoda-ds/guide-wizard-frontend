@@ -85,11 +85,8 @@ export const ATTRIBUTE_SECTIONS: AttributeSection[] = [
           { value: 'african_american', label: 'African American' },
           { value: 'black_african_immigrant', label: 'African immigrant (Nigerian, Ghanaian, Ethiopian, Somali…)' },
           { value: 'afro_caribbean', label: 'Afro-Caribbean (Jamaican, Haitian, Trinidadian…)' },
-          { value: 'hispanic_latina', label: 'Hispanic / Latina' },
-          { value: 'vietnamese', label: 'Vietnamese' },
-          { value: 'korean', label: 'Korean' },
-          { value: 'white', label: 'White' },
-          { value: 'multiracial_other', label: 'Multiracial / another community' },
+          { value: 'afro_latina', label: 'Afro-Latina' },
+          { value: 'black_multiracial_other', label: 'Multiracial / another Black background' },
           { value: 'prefer_not_to_say', label: 'Prefer not to say' },
         ],
       },
@@ -271,11 +268,8 @@ export function deriveIntersectionalConfig(attrs: ViewerAttributes): string {
     african_american: 'African American',
     black_african_immigrant: 'African immigrant',
     afro_caribbean: 'Afro-Caribbean',
-    hispanic_latina: 'Hispanic/Latina',
-    vietnamese: 'Vietnamese',
-    korean: 'Korean',
-    white: 'White',
-    multiracial_other: 'multiracial',
+    afro_latina: 'Afro-Latina',
+    black_multiracial_other: 'multiracial Black',
   };
   if (attrs.population_group && attrs.population_group !== 'prefer_not_to_say')
     parts.push(popLabels[attrs.population_group] ?? attrs.population_group);

@@ -129,7 +129,19 @@ export const BARRIERS = [
   { id: 'access', label: "I'm too busy or can't afford it", emoji: '💸' },
 ];
 
-export const LANGUAGES = ['English', 'Spanish', 'Vietnamese', 'Korean', 'Uzbek'];
+// Languages spoken across the African American / Black diaspora communities
+// this app serves (African American, African immigrant, Afro-Caribbean, Afro-Latina).
+export const LANGUAGES = [
+  'English',
+  'Haitian Creole',
+  'French',
+  'Spanish',
+  'Amharic',
+  'Somali',
+  'Swahili',
+  'Yoruba',
+  'Arabic',
+];
 
 export const VALUES = [
   { id: 'family', label: 'Family', emoji: '👨‍👩‍👧' },
