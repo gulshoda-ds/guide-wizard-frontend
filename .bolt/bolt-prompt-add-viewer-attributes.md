@@ -16,7 +16,10 @@ keys and internal option values (labels are what the participant sees):
 
 1. **age** — "How old are you?" → `under_40 / 40_49 / 50_64 / 65_74 / 75_plus`
 2. **population_group** — "Which community do you most identify with?" →
-   `african_american / hispanic_latina / vietnamese / korean / uzbek_central_asian / white / multiracial_other / prefer_not_to_say`
+   `african_american` ("African American") /
+   `black_african_immigrant` ("African immigrant (Nigerian, Ghanaian, Ethiopian, Somali…)") /
+   `afro_caribbean` ("Afro-Caribbean (Jamaican, Haitian, Trinidadian…)") /
+   `hispanic_latina / vietnamese / korean / white / multiracial_other / prefer_not_to_say`
 3. **migration_status** — "Were you born in the US, or did you move here?" →
    `us_born / immigrant_10plus_years / immigrant_recent`
 4. **acculturation_level** — "Day to day, which feels most like you?" →
@@ -37,8 +40,12 @@ keys and internal option values (labels are what the participant sees):
 10. **coping_style** — "When it comes to health information, which sounds more like you?" →
     `monitoring` ("Tell me everything — details help me feel in control") /
     `blunting` ("Keep it brief — too much detail stresses me out")
-11. **faith_affiliation** — optional — "Do you follow a faith or spiritual tradition?" →
-    `christian / muslim / buddhist / other_faith / none / prefer_not_to_say`
+11. **faith_affiliation** — optional — "Do you follow a faith or spiritual tradition?"
+    ("Pick the one closest to yours.") →
+    `christian_baptist / christian_ame_methodist / christian_pentecostal ("Christian — Pentecostal / COGIC") /
+    christian_nondenominational / christian_catholic / christian_other /
+    jewish / muslim / buddhist / hindu / spiritual_not_religious /
+    other_faith / none / prefer_not_to_say`
 12. **faith_practice** — optional, shown **only** when faith_affiliation is set
     and not `none`/`prefer_not_to_say` — "How big a part does faith play in your
     daily life?" → `central / important / occasional / not_practicing`
