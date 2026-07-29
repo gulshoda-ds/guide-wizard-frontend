@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: #fdfaf5;
+  }
+}
+
+@layer components {
+  .chip {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-transparent cursor-pointer select-none transition-all duration-200 text-sm font-medium;
+  }
+
+  .chip-unselected {
+    @apply bg-white border-sand-200 text-sand-700 hover:border-coral-300 hover:bg-coral-50 hover:text-coral-600;
+  }
+
+  .chip-selected {
+    @apply bg-coral-500 border-coral-500 text-white shadow-md;
+  }
+
+  .card-option {
+    @apply relative flex flex-col items-center justify-center p-5 rounded-2xl border-2 border-transparent bg-white cursor-pointer select-none transition-all duration-200 hover:border-coral-300 hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .card-option-selected {
+    @apply border-coral-500 bg-coral-50 shadow-lg -translate-y-0.5;
+  }
+
+  .step-btn-primary {
+    @apply bg-coral-500 hover:bg-coral-600 active:bg-coral-700 text-white font-semibold px-8 py-3.5 rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .step-btn-ghost {
+    @apply text-sand-600 hover:text-sand-800 font-medium px-6 py-3 rounded-full transition-colors duration-200;
+  }
+}
+
+/* SurveyJS override – blend into our palette */
+.sv-root-modern {
+  --primary: #f05a2e;
+  --primary-light: rgba(240,90,46,0.1);
+  --background: #fdfaf5;
+  --background-dim: #faf3e8;
+  --foreground: #3d2b1a;
+  --border: #eccfaa;
+  --font-family: system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+}
+
+.sv-root-modern .sv-btn {
+  background: #f05a2e;
+  border-radius: 9999px;
+  font-weight: 600;
+  padding: 10px 28px;
+}
+
+.sv-root-modern .sv-question__title {
+  color: #3d2b1a;
+  font-weight: 600;
+}
+
+.sv-root-modern .sv-checkbox__decorator {
+  border-color: #eccfaa;
+}
+
+.sv-root-modern .sv-checkbox--checked .sv-checkbox__decorator {
+  background: #f05a2e;
+  border-color: #f05a2e;
+}
+
+.sv-root-modern input[type="radio"]:checked + .sv-radio__decorator {
+  background: #f05a2e;
+  border-color: #f05a2e;
+}
+
+.sv-root-modern .sv-item__control:focus + .sv-item__decorator {
+  box-shadow: 0 0 0 3px rgba(240,90,46,0.25);
+}
+
+.sv-root-modern .sv-rating__item-star {
+  color: #f05a2e;
+}
+
+/* Smooth transitions between steps */
+.step-transition-enter {
+  animation: slideUp 0.4s ease-out forwards;
+}
