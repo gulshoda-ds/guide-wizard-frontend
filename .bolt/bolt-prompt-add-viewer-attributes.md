@@ -60,7 +60,7 @@ keys and internal option values (labels are what the participant sees):
     these days?" → `struggling / getting_by / comfortable / prefer_not_to_say`
 14. **intersectional_configuration** — **auto-derived, never asked.** A short
     " · "-joined label rebuilt on every change from the salient answers, e.g.
-    `"50–64 · Uzbek/Central Asian · recent immigrant · limited English ·
+    `"50–64 · Afro-Caribbean · recent immigrant · limited English ·
     faith-centered · caregiver · overdue for screening · wants full detail"`.
     Show it read-only at the bottom of the step ("How your guide will see you at
     a glance — built automatically from your answers").
