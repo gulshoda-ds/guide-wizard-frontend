@@ -1,26 +1,16 @@
 import { useState } from 'react';
-import HomeScreen from './HomeScreen';
 import AvatarCreate from './pages/AvatarCreate';
 import GuideWizard from './pages/GuideWizard';
 
-type View = 'home' | 'guide' | 'portrait';
+type View = 'guide' | 'portrait';
 
 export default function App() {
-  const [view, setView] = useState<View>('home');
+  // The guide wizard is the app — it opens straight on "Let's design your guide".
+  const [view, setView] = useState<View>('guide');
 
-  const goHome = () => setView('home');
-
-  if (view === 'guide') {
-    return <GuideWizard onBack={goHome} />;
-  }
   if (view === 'portrait') {
-    return <AvatarCreate onBack={goHome} />;
+    return <AvatarCreate onBack={() => setView('guide')} />;
   }
 
-  return (
-    <HomeScreen
-      onSelectGuide={() => setView('guide')}
-      onSelectPortrait={() => setView('portrait')}
-    />
-  );
+  return <GuideWizard onOpenPortrait={() => setView('portrait')} />;
 }

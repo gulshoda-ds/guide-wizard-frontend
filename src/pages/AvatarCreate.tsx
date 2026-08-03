@@ -690,14 +690,11 @@ export default function AvatarCreate({ onBack }: { onBack?: () => void }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // "Start over" clears the form and stays here — leaving is the nav button's job.
   const handleReset = () => {
     setForm({ wears_glasses: "none" });
     setResult(false);
-    if (onBack) {
-      onBack();
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const style = form.style as StyleSelection;
@@ -707,7 +704,7 @@ export default function AvatarCreate({ onBack }: { onBack?: () => void }) {
       {/* Warm top strip */}
       <div className="h-1 w-full bg-gradient-to-r from-rose-800 via-rose-600 to-amber-500" />
 
-      {/* Home nav */}
+      {/* Back-to-wizard nav */}
       {onBack && (
         <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-stone-100 shadow-sm">
           <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
@@ -716,7 +713,7 @@ export default function AvatarCreate({ onBack }: { onBack?: () => void }) {
               onClick={onBack}
               className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 transition-colors font-medium"
             >
-              <ArrowLeft size={15} /> Home
+              <ArrowLeft size={15} /> Back to guide
             </button>
             <span className="text-stone-200">|</span>
             <span className="text-sm font-semibold text-stone-700" style={{ fontFamily: "Georgia, serif" }}>

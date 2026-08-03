@@ -2,10 +2,10 @@
 
 interface WelcomeStepProps {
   onStart: () => void;
-  onBack?: () => void;
+  onOpenPortrait?: () => void;
 }
 
-export default function WelcomeStep({ onStart, onBack }: WelcomeStepProps) {
+export default function WelcomeStep({ onStart, onOpenPortrait }: WelcomeStepProps) {
   return (
     <div className="flex flex-col items-center justify-center min-h-[72vh] text-center px-6 animate-fade-in relative">
       <div className="absolute top-16 left-8 w-44 h-44 bg-coral-200 rounded-full opacity-20 blur-3xl pointer-events-none" />
@@ -43,12 +43,12 @@ export default function WelcomeStep({ onStart, onBack }: WelcomeStepProps) {
           Educational tool only — no medical advice is provided.
         </p>
 
-        {onBack && (
+        {onOpenPortrait && (
           <button
-            onClick={onBack}
-            className="mt-4 text-sand-400 hover:text-sand-600 text-xs transition-colors"
+            onClick={onOpenPortrait}
+            className="mt-4 text-sand-400 hover:text-sand-600 text-xs underline underline-offset-2 transition-colors"
           >
-            ← Back to home
+            Just want a portrait prompt? →
           </button>
         )}
       </div>
