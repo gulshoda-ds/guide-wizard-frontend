@@ -43,52 +43,6 @@
   }
 }
 
-/* SurveyJS override – blend into our palette */
-.sv-root-modern {
-  --primary: #f05a2e;
-  --primary-light: rgba(240,90,46,0.1);
-  --background: #fdfaf5;
-  --background-dim: #faf3e8;
-  --foreground: #3d2b1a;
-  --border: #eccfaa;
-  --font-family: system-ui, -apple-system, sans-serif;
-  font-size: 15px;
-}
-
-.sv-root-modern .sv-btn {
-  background: #f05a2e;
-  border-radius: 9999px;
-  font-weight: 600;
-  padding: 10px 28px;
-}
-
-.sv-root-modern .sv-question__title {
-  color: #3d2b1a;
-  font-weight: 600;
-}
-
-.sv-root-modern .sv-checkbox__decorator {
-  border-color: #eccfaa;
-}
-
-.sv-root-modern .sv-checkbox--checked .sv-checkbox__decorator {
-  background: #f05a2e;
-  border-color: #f05a2e;
-}
-
-.sv-root-modern input[type="radio"]:checked + .sv-radio__decorator {
-  background: #f05a2e;
-  border-color: #f05a2e;
-}
-
-.sv-root-modern .sv-item__control:focus + .sv-item__decorator {
-  box-shadow: 0 0 0 3px rgba(240,90,46,0.25);
-}
-
-.sv-root-modern .sv-rating__item-star {
-  color: #f05a2e;
-}
-
 /* Smooth transitions between steps */
 .step-transition-enter {
   animation: slideUp 0.4s ease-out forwards;

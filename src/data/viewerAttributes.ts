@@ -1,7 +1,7 @@
 // Viewer attributes for the personalization instance graph (L1 Viewer node).
 // Each question maps a plain-language prompt to a stable snake_case attribute
 // key + internal option values used downstream for KG grounding.
-// intersectional_configuration is auto-derived, never asked.
+// intersectional_identity is auto-derived, never asked.
 
 export interface ViewerAttributes {
   age: string;
@@ -13,11 +13,11 @@ export interface ViewerAttributes {
   health_status: string;
   risk_history: string[];
   caregiving_responsibilities: string[];
-  coping_style: string;
+  communication_style: string;
   faith_affiliation: string;
   faith_practice: string;
   population_group: string;
-  intersectional_configuration: string; // auto-derived label
+  intersectional_identity: string; // auto-derived label
 }
 
 export const defaultViewerAttributes = (): ViewerAttributes => ({
@@ -30,11 +30,11 @@ export const defaultViewerAttributes = (): ViewerAttributes => ({
   health_status: '',
   risk_history: [],
   caregiving_responsibilities: [],
-  coping_style: '',
+  communication_style: '',
   faith_affiliation: '',
   faith_practice: '',
   population_group: '',
-  intersectional_configuration: '',
+  intersectional_identity: '',
 });
 
 export interface AttributeOption {
@@ -44,7 +44,7 @@ export interface AttributeOption {
 }
 
 export interface AttributeQuestion {
-  key: keyof Omit<ViewerAttributes, 'intersectional_configuration'>;
+  key: keyof Omit<ViewerAttributes, 'intersectional_identity'>;
   prompt: string;
   sub?: string; // optional smaller helper line under the prompt
   multi: boolean; // multi-select (string[]) vs single-select (string)
@@ -176,11 +176,11 @@ export const ATTRIBUTE_SECTIONS: AttributeSection[] = [
     ],
   },
   {
-    title: 'How you cope & what you hold onto',
+    title: 'How you like information & what you hold onto',
     emoji: '🕊️',
     questions: [
       {
-        key: 'coping_style',
+        key: 'communication_style',
         prompt: 'When it comes to health information, which sounds more like you?',
         multi: false,
         options: [
@@ -249,10 +249,10 @@ export const optionLabel = (key: AttributeQuestion['key'], value: string): strin
   ATTRIBUTE_QUESTIONS.find((q) => q.key === key)?.options.find((o) => o.value === value)?.label ??
   value;
 
-// Auto-derive the short intersectional configuration label from the salient
+// Auto-derive the short intersectional identity label from the salient
 // attributes — mirrors the instance-graph spec ("50–64 · recent immigrant ·
 // limited English"). Never asked; recomputed whenever answers change.
-export function deriveIntersectionalConfig(attrs: ViewerAttributes): string {
+export function deriveIntersectionalIdentity(attrs: ViewerAttributes): string {
   const parts: string[] = [];
 
   const ageLabels: Record<string, string> = {
@@ -287,8 +287,8 @@ export function deriveIntersectionalConfig(attrs: ViewerAttributes): string {
   if (attrs.screening_history === 'never_screened') parts.push('never screened');
   else if (attrs.screening_history === 'overdue') parts.push('overdue for screening');
 
-  if (attrs.coping_style === 'monitoring') parts.push('wants full detail');
-  else if (attrs.coping_style === 'blunting') parts.push('prefers essentials');
+  if (attrs.communication_style === 'monitoring') parts.push('wants full detail');
+  else if (attrs.communication_style === 'blunting') parts.push('prefers essentials');
 
   return parts.join(' · ');
 }

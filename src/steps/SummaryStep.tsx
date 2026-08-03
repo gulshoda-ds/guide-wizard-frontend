@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Copy, Check, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
-import { Profile, SCREENINGS, BARRIERS, VALUES, PERSONAS, VIBES, assembleImagePrompt } from '../data';
-import LiveAvatar from '../LiveAvatar';
+import { ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { Profile, SCREENINGS, BARRIERS, VALUES } from '../data';
+import {
+  ATTRIBUTE_SECTIONS,
+  optionLabel,
+} from '../data/viewerAttributes';
 
 interface SummaryStepProps {
   profile: Profile;
@@ -10,72 +13,56 @@ interface SummaryStepProps {
   onGenerate: () => void;
 }
 
+/** Answered attributes only, in the order they were asked. */
+function answeredAttributes(profile: Profile) {
+  const attrs = profile.viewer_attributes;
+  const rows: { key: string; prompt: string; value: string }[] = [];
+
+  for (const section of ATTRIBUTE_SECTIONS) {
+    for (const q of section.questions) {
+      const raw = attrs[q.key];
+      const values = Array.isArray(raw) ? raw : raw ? [raw] : [];
+      if (values.length === 0) continue;
+      rows.push({
+        key: q.key,
+        prompt: q.prompt,
+        value: values.map((v) => optionLabel(q.key, v)).join(', '),
+      });
+    }
+  }
+  return rows;
+}
+
 export default function SummaryStep({ profile, onBack, onGenerate }: SummaryStepProps) {
-  const [promptOpen, setPromptOpen] = useState(true);
   const [jsonOpen, setJsonOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const screening = SCREENINGS.find((s) => s.id === profile.screening_type);
   const topBarriers = BARRIERS.filter((b) => profile.barriers.includes(b.id));
   const chosenValues = VALUES.filter((v) => profile.values.includes(v.id));
-  const persona = PERSONAS.find((p) => p.id === profile.guide_persona);
-  const vibe = VIBES.find((v) => v.id === profile.guide_vibe);
-
-  const imagePrompt = assembleImagePrompt(profile);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(imagePrompt).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  const attributeRows = answeredAttributes(profile);
+  const identity = profile.viewer_attributes.intersectional_identity;
 
   return (
     <div className="max-w-xl mx-auto px-4 pb-12 animate-slide-up">
       {/* Hero */}
       <div className="flex flex-col items-center mb-8 text-center">
-        <div className="relative mb-4">
-          <div className="w-36 h-36 rounded-full bg-gradient-to-br from-coral-50 to-teal-100 border-2 border-coral-200 flex items-center justify-center shadow-lg overflow-hidden">
-            <LiveAvatar profile={profile} size="lg" />
-          </div>
-          <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-teal-400 rounded-full flex items-center justify-center shadow-md text-white text-sm font-bold">
-            ✓
-          </div>
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-coral-400 to-coral-600 flex items-center justify-center shadow-lg mb-4">
+          <span className="text-3xl">🎬</span>
         </div>
         <h2
           className="text-3xl font-bold mb-1"
           style={{ fontFamily: 'Georgia, serif', color: '#2d1a0e' }}
         >
-          Meet your guide!
+          Ready to build your video
         </h2>
-        <div className="flex items-center gap-1.5 text-teal-600 text-sm font-medium">
-          <Sparkles size={14} />
-          <span>Your guide is ready to build</span>
-        </div>
+        <p className="text-sand-600 text-sm max-w-sm">
+          Here's what your guide will know about you. Your guide's appearance and voice are
+          chosen to match your community.
+        </p>
       </div>
 
       {/* Summary card */}
       <div className="bg-white rounded-3xl border border-sand-200 shadow-sm p-6 mb-5">
-        <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-sand-100">
-          {persona && (
-            <div>
-              <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-1">Personality</div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg">{persona.emoji}</span>
-                <span className="text-sm font-medium text-sand-800">{persona.label}</span>
-              </div>
-            </div>
-          )}
-          {vibe && (
-            <div>
-              <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-1">Energy</div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-lg">{vibe.emoji}</span>
-                <span className="text-sm font-medium text-sand-800">{vibe.label}</span>
-              </div>
-            </div>
-          )}
-        </div>
-
         <div className="space-y-4">
           {screening && (
             <div className="flex gap-3">
@@ -83,8 +70,20 @@ export default function SummaryStep({ profile, onBack, onGenerate }: SummaryStep
                 <span className="text-base">{screening.icon}</span>
               </div>
               <div>
-                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-0.5">Screening focus</div>
+                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-0.5">Video topic</div>
                 <div className="text-sm font-medium text-sand-800">{screening.label}</div>
+              </div>
+            </div>
+          )}
+
+          {identity && (
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-base">🧭</span>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-0.5">Intersectional identity</div>
+                <div className="text-sm font-medium text-sand-800">{identity}</div>
               </div>
             </div>
           )}
@@ -107,27 +106,13 @@ export default function SummaryStep({ profile, onBack, onGenerate }: SummaryStep
             </div>
           )}
 
-          {profile.viewer_attributes.intersectional_configuration && (
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-base">🧭</span>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-0.5">About you</div>
-                <div className="text-sm font-medium text-sand-800">
-                  {profile.viewer_attributes.intersectional_configuration}
-                </div>
-              </div>
-            </div>
-          )}
-
           {topBarriers.length > 0 && (
             <div className="flex gap-3">
               <div className="w-8 h-8 rounded-full bg-coral-100 flex items-center justify-center flex-shrink-0">
                 <span className="text-base">🎯</span>
               </div>
               <div>
-                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-1.5">Content will address</div>
+                <div className="text-xs font-semibold text-sand-400 uppercase tracking-wider mb-1.5">The video will address</div>
                 <ul className="space-y-0.5">
                   {topBarriers.map((b) => (
                     <li key={b.id} className="text-sm text-sand-600 flex items-start gap-1.5">
@@ -163,49 +148,25 @@ export default function SummaryStep({ profile, onBack, onGenerate }: SummaryStep
         className="w-full step-btn-primary text-base py-4 mb-5 flex items-center justify-center gap-2"
       >
         <Sparkles size={18} />
-        Generate my guide
+        Generate my video
       </button>
 
-      {/* Image prompt panel */}
-      <div className="bg-white rounded-2xl border border-sand-200 overflow-hidden mb-3 shadow-sm">
-        <button
-          onClick={() => setPromptOpen((p) => !p)}
-          className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-sand-50 transition-colors"
-        >
-          <div>
-            <div className="text-sm font-semibold text-sand-800 flex items-center gap-2">
-              <span className="text-base">🎨</span> Image prompt
-            </div>
-            <div className="text-xs text-sand-400">Ready to paste into Nano Banana / Gemini</div>
+      {/* What you told us */}
+      {attributeRows.length > 0 && (
+        <div className="bg-white rounded-2xl border border-sand-200 shadow-sm p-5 mb-3">
+          <div className="text-sm font-semibold text-sand-800 mb-3 flex items-center gap-2">
+            <span className="text-base">📝</span> What you told us
           </div>
-          {promptOpen ? <ChevronUp size={16} className="text-sand-400" /> : <ChevronDown size={16} className="text-sand-400" />}
-        </button>
-        {promptOpen && (
-          <div className="px-5 pb-5">
-            {imagePrompt ? (
-              <>
-                <pre className="bg-sand-50 rounded-xl p-4 text-xs text-sand-700 border border-sand-100 whitespace-pre-wrap leading-relaxed font-mono mb-3">
-                  {imagePrompt}
-                </pre>
-                <button
-                  onClick={handleCopy}
-                  className={[
-                    'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200',
-                    copied
-                      ? 'bg-teal-500 text-white'
-                      : 'bg-coral-500 hover:bg-coral-600 text-white',
-                  ].join(' ')}
-                >
-                  {copied ? <Check size={15} /> : <Copy size={15} />}
-                  {copied ? 'Copied!' : 'Copy prompt'}
-                </button>
-              </>
-            ) : (
-              <p className="text-sand-400 text-sm italic">Complete the look and scene steps to generate the image prompt.</p>
-            )}
-          </div>
-        )}
-      </div>
+          <dl className="space-y-2.5">
+            {attributeRows.map((row) => (
+              <div key={row.key} className="flex flex-col sm:flex-row sm:gap-3">
+                <dt className="text-xs text-sand-400 sm:w-1/2 flex-shrink-0">{row.prompt}</dt>
+                <dd className="text-sm text-sand-700 sm:w-1/2">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
 
       {/* JSON panel */}
       <div className="bg-white rounded-2xl border border-sand-200 overflow-hidden shadow-sm">
@@ -231,7 +192,7 @@ export default function SummaryStep({ profile, onBack, onGenerate }: SummaryStep
       </div>
 
       <div className="mt-6 flex justify-center">
-        <button onClick={onBack} className="step-btn-ghost text-sm">← Start over</button>
+        <button onClick={onBack} className="step-btn-ghost text-sm">← Back</button>
       </div>
     </div>
   );

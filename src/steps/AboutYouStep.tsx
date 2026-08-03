@@ -3,7 +3,7 @@ import {
   ATTRIBUTE_SECTIONS,
   AttributeQuestion,
   ViewerAttributes,
-  deriveIntersectionalConfig,
+  deriveIntersectionalIdentity,
 } from '../data/viewerAttributes';
 
 interface AboutYouStepProps {
@@ -18,7 +18,7 @@ export default function AboutYouStep({ profile, onChange, onNext, onBack }: Abou
 
   const setAttrs = (u: Partial<ViewerAttributes>) => {
     const next = { ...attrs, ...u };
-    next.intersectional_configuration = deriveIntersectionalConfig(next);
+    next.intersectional_identity = deriveIntersectionalIdentity(next);
     onChange({ viewer_attributes: next });
   };
 
@@ -105,13 +105,13 @@ export default function AboutYouStep({ profile, onChange, onNext, onBack }: Abou
       ))}
 
       {/* Auto-derived intersectional configuration — read-only transparency */}
-      {attrs.intersectional_configuration && (
+      {attrs.intersectional_identity && (
         <div className="mb-8 rounded-2xl border border-teal-100 bg-teal-50 px-5 py-4">
           <div className="text-xs font-semibold text-teal-600 uppercase tracking-wider mb-1">
             How your guide will see you at a glance
           </div>
           <div className="text-sm font-medium text-teal-800">
-            {attrs.intersectional_configuration}
+            {attrs.intersectional_identity}
           </div>
           <div className="text-xs text-teal-500 mt-1">
             Built automatically from your answers — nothing extra is asked.

@@ -1,8 +1,4 @@
-import { useRef } from 'react';
-import { Survey } from 'survey-react-ui';
-import { Model } from 'survey-core';
-import 'survey-core/survey-core.min.css';
-import { Profile, SCREENINGS, BARRIERS, LANGUAGES, VALUES, getSurveyJson } from '../data';
+import { Profile, SCREENINGS, BARRIERS, LANGUAGES, VALUES } from '../data';
 
 interface ConcernStepProps {
   profile: Profile;
@@ -12,8 +8,6 @@ interface ConcernStepProps {
 }
 
 export default function ConcernStep({ profile, onChange, onNext, onBack }: ConcernStepProps) {
-  const surveyRef = useRef<Model | null>(null);
-
   const toggleBarrier = (id: string) => {
     const next = profile.barriers.includes(id)
       ? profile.barriers.filter((b) => b !== id)
@@ -27,20 +21,6 @@ export default function ConcernStep({ profile, onChange, onNext, onBack }: Conce
       : [...profile.values, id];
     onChange({ values: next });
   };
-
-  const getSurveyModel = () => {
-    if (surveyRef.current) return surveyRef.current;
-    const model = new Model(getSurveyJson(profile.screening_type));
-    model.applyTheme({ isPanelless: true });
-    if (Object.keys(profile.survey_data).length > 0) model.data = profile.survey_data;
-    model.onValueChanged.add((_s, opts) => {
-      onChange({ survey_data: { ...profile.survey_data, [opts.name]: opts.value } });
-    });
-    surveyRef.current = model;
-    return model;
-  };
-
-  const screening = SCREENINGS.find((s) => s.id === profile.screening_type);
 
   return (
     <div className="max-w-xl mx-auto px-4 pb-10 animate-slide-up">
@@ -60,10 +40,7 @@ export default function ConcernStep({ profile, onChange, onNext, onBack }: Conce
             return (
               <button
                 key={s.id}
-                onClick={() => {
-                  onChange({ screening_type: s.id });
-                  surveyRef.current = null; // reset SurveyJS on type change
-                }}
+                onClick={() => onChange({ screening_type: s.id })}
                 className={[
                   'text-left p-4 rounded-2xl border-2 transition-all duration-200',
                   selected
@@ -109,21 +86,6 @@ export default function ConcernStep({ profile, onChange, onNext, onBack }: Conce
         </div>
       </div>
 
-      {/* Adaptive SurveyJS questions */}
-      {profile.screening_type && (
-        <div className="mb-7 bg-white rounded-2xl border border-sand-200 overflow-hidden">
-          <div className="px-5 pt-4 pb-1">
-            <p className="text-sm font-semibold text-sand-700">
-              A few more questions about{' '}
-              <span style={{ color: screening?.accent }}>{screening?.label.toLowerCase()}</span>
-            </p>
-          </div>
-          <div className="px-2 pb-2">
-            <Survey model={getSurveyModel()} />
-          </div>
-        </div>
-      )}
-
       {/* Language */}
       <div className="mb-6">
         <p className="text-sm font-semibold text-sand-700 mb-2">Which language feels most like home?</p>
@@ -164,7 +126,7 @@ export default function ConcernStep({ profile, onChange, onNext, onBack }: Conce
           disabled={!profile.screening_type}
           className={['step-btn-primary', !profile.screening_type ? 'opacity-50 cursor-not-allowed' : ''].join(' ')}
         >
-          Meet your guide →
+          Next: about you →
         </button>
       </div>
     </div>

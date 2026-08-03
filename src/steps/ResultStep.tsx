@@ -4,7 +4,6 @@ import {
   ShieldCheck, ShieldAlert, Film, RotateCcw,
 } from 'lucide-react';
 import { Profile } from '../data';
-import LiveAvatar from '../LiveAvatar';
 import {
   postIntake, createVideo, getVideoStatus, videoUrl,
   type IntakeResponse, type VideoStatus,
@@ -119,7 +118,7 @@ export default function ResultStep({ profile, onBack, onRestart }: ResultStepPro
       <div className="flex flex-col items-center mb-8 text-center">
         <div className="relative mb-4">
           <div className="w-32 h-32 rounded-full bg-gradient-to-br from-coral-50 to-teal-100 border-2 border-coral-200 flex items-center justify-center shadow-lg overflow-hidden">
-            <LiveAvatar profile={profile} size="lg" />
+            <span className="text-5xl">🎬</span>
           </div>
           {phase === 'ready' && (
             <div className="absolute -bottom-1 -right-1 w-9 h-9 bg-teal-400 rounded-full flex items-center justify-center shadow-md text-white text-sm font-bold">

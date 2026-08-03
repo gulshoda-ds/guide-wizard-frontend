@@ -2,29 +2,17 @@ import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Profile, defaultProfile } from '../data';
 import WelcomeStep from '../steps/WelcomeStep';
-import PersonalityStep from '../steps/PersonalityStep';
-import LookStep from '../steps/LookStep';
-import SceneStep from '../steps/SceneStep';
 import ConcernStep from '../steps/ConcernStep';
 import AboutYouStep from '../steps/AboutYouStep';
 import SummaryStep from '../steps/SummaryStep';
 import ResultStep from '../steps/ResultStep';
 
 // The wizard steps, in order. "result" runs the backend pipeline.
-const STEPS = [
-  'welcome',
-  'personality',
-  'look',
-  'scene',
-  'concern',
-  'about_you',
-  'summary',
-  'result',
-] as const;
+const STEPS = ['welcome', 'concern', 'about_you', 'summary', 'result'] as const;
 type StepName = (typeof STEPS)[number];
 
 // Steps shown in the top progress bar (welcome/result are framing, not counted).
-const PROGRESS_STEPS: StepName[] = ['personality', 'look', 'scene', 'concern', 'about_you', 'summary'];
+const PROGRESS_STEPS: StepName[] = ['concern', 'about_you', 'summary'];
 
 export default function GuideWizard({ onOpenPortrait }: { onOpenPortrait?: () => void }) {
   const [profile, setProfile] = useState<Profile>(defaultProfile);
@@ -91,15 +79,6 @@ export default function GuideWizard({ onOpenPortrait }: { onOpenPortrait?: () =>
 
       <div className="py-8">
         {step === 'welcome' && <WelcomeStep onStart={next} onOpenPortrait={onOpenPortrait} />}
-        {step === 'personality' && (
-          <PersonalityStep profile={profile} onChange={update} onNext={next} onBack={back} />
-        )}
-        {step === 'look' && (
-          <LookStep profile={profile} onChange={update} onNext={next} onBack={back} />
-        )}
-        {step === 'scene' && (
-          <SceneStep profile={profile} onChange={update} onNext={next} onBack={back} />
-        )}
         {step === 'concern' && (
           <ConcernStep profile={profile} onChange={update} onNext={next} onBack={back} />
         )}
